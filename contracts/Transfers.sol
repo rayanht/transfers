@@ -107,7 +107,7 @@ contract Transfers is ERC721, ERC721Metadata {
 
     uint256 constant MAX_TOKENS = 2000;
     uint256 constant MAX_TOKENS_PER_MINT = 10;
-    uint256 constant PRICE = 100;
+    uint256 constant PRICE = 0;
     uint256 public _countToken;
 
     uint256 public immutable _percentageTotal;
