@@ -1,0 +1,6 @@
+.env
+.vscode/
+artifacts/
+bin/
+cache/
+node_modules/

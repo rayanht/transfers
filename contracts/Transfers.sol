@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.6;
+pragma solidity ^0.8.0;
 
 import {SafeMath} from "./SafeMath.sol";
 import {Counters} from "./Counters.sol";
@@ -117,7 +117,6 @@ contract Transfers is ERC721, ERC721Metadata {
 
     address public _owner;
     address public _receiver;
-    address public _proxyRegistryAddress;
 
     // Mapping from owner address to token ID.
     mapping(address => uint256) private _tokens;
@@ -186,7 +185,7 @@ contract Transfers is ERC721, ERC721Metadata {
         _;
     }
 
-    constructor(address owner_, address proxyRegistryAddress_) {
+    constructor(address owner_) {
         _name = "transfers";
         _symbol = "T";
 
@@ -195,7 +194,6 @@ contract Transfers is ERC721, ERC721Metadata {
 
         _percentageTotal = 10000;
         _percentageRoyalty = 1000;
-        _proxyRegistryAddress = proxyRegistryAddress_;
     }
 
     function name() public view virtual override returns (string memory) {
@@ -294,8 +292,12 @@ contract Transfers is ERC721, ERC721Metadata {
         }
     }
 
-    function finalize() external onlyOwner {
+    function startMint() external onlyOwner {
         _minting = true;
+    }
+
+    function stopMint() external onlyOwner {
+        _minting = false;
     }
 
     function safeTransferFrom(
@@ -408,7 +410,7 @@ contract Transfers is ERC721, ERC721Metadata {
         returns (bool)
     {
         // Whitelist OpenSea proxy contract for easy trading.
-        ProxyRegistry proxyRegistry = ProxyRegistry(_proxyRegistryAddress);
+        ProxyRegistry proxyRegistry = ProxyRegistry(0x58807baD0B376efc12F5AD86aAc70E78ed67deaE);
         if (address(proxyRegistry.proxies(owner)) == operator) {
             return true;
         }
